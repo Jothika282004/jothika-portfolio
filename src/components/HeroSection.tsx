@@ -1,6 +1,9 @@
-import { ArrowDown, Eye, Mail } from "lucide-react";
+import { ArrowDown, Eye, Mail, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import profileAvatar from "@/assets/profile-avatar.png";
+
+// Replace this with your actual resume link (Google Drive, Dropbox, etc.)
+const RESUME_URL = "https://drive.google.com/your-resume-link";
 
 const HeroSection = () => {
   return (
@@ -49,7 +52,7 @@ const HeroSection = () => {
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-slide-up opacity-0 stagger-5" style={{ animationFillMode: "forwards" }}>
+            <div className="flex flex-wrap gap-4 justify-center lg:justify-start animate-slide-up opacity-0 stagger-5" style={{ animationFillMode: "forwards" }}>
               <Button variant="hero" size="xl" asChild>
                 <a href="#projects">
                   <Eye className="w-5 h-5" />
@@ -60,6 +63,12 @@ const HeroSection = () => {
                 <a href="#contact">
                   <Mail className="w-5 h-5" />
                   Contact Me
+                </a>
+              </Button>
+              <Button variant="neon" size="xl" asChild>
+                <a href={RESUME_URL} target="_blank" rel="noopener noreferrer" download>
+                  <Download className="w-5 h-5" />
+                  Download Resume
                 </a>
               </Button>
             </div>
