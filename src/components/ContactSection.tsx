@@ -8,20 +8,20 @@ const contactInfo = [
   {
     icon: Mail,
     label: "Email",
-    value: "jothika@example.com",
-    href: "mailto:jothika@example.com",
+    value: "jothika04be@gmail.com",
+    href: "mailto:jothika04be@gmail.com",
   },
   {
     icon: Phone,
     label: "Phone",
-    value: "+91 XXXXX XXXXX",
-    href: "tel:+91XXXXXXXXXX",
+    value: "+91 94861 94347",
+    href: "tel:+919486194347",
   },
   {
     icon: Linkedin,
     label: "LinkedIn",
-    value: "linkedin.com/in/jothika",
-    href: "https://linkedin.com/in/jothika",
+    value: "linkedin.com/in/jothika-gunasekar",
+    href: "https://www.linkedin.com/in/jothika-gunasekar-a88375253",
   },
   {
     icon: Github,
