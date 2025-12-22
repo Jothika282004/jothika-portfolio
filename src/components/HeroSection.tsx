@@ -1,9 +1,8 @@
 import { ArrowDown, Eye, Mail, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import profileAvatar from "@/assets/profile-avatar.png";
+import profileAvatar from "@/assets/profile-photo.jpeg";
 
-// Replace this with your actual resume link (Google Drive, Dropbox, etc.)
-const RESUME_URL = "https://drive.google.com/your-resume-link";
+const RESUME_URL = "/Jothika_Resume.pdf";
 
 const HeroSection = () => {
   return (
