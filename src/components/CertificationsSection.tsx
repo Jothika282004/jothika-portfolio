@@ -1,20 +1,59 @@
-import { Award, ExternalLink, Calendar } from "lucide-react";
+import { Award, Eye, Calendar } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+
+import certTcs from "@/assets/cert-tcs.jpeg";
+import certDeloitte from "@/assets/cert-deloitte.jpeg";
+import certPantech from "@/assets/cert-pantech.jpeg";
+import certAndroid from "@/assets/cert-android.jpeg";
+import certCloud from "@/assets/cert-cloud.jpeg";
+import certIbm from "@/assets/cert-ibm.jpeg";
+import certMicrosoft from "@/assets/cert-microsoft.jpeg";
 
 const certifications = [
   {
-    title: "Add Your Certification",
-    issuer: "Issuing Organization",
-    date: "Month Year",
-    credentialUrl: "#",
-    description: "Brief description of the certification.",
+    title: "TCS iON Career Edge - Young Professional",
+    issuer: "Tata Consultancy Services",
+    date: "Mar 2024",
+    image: certTcs,
   },
   {
-    title: "Add Another Certification",
-    issuer: "Issuing Organization",
-    date: "Month Year",
-    credentialUrl: "#",
-    description: "Brief description of the certification.",
+    title: "Cyber Job Simulation",
+    issuer: "Deloitte",
+    date: "Dec 2025",
+    image: certDeloitte,
+  },
+  {
+    title: "Python Full Stack Development Internship",
+    issuer: "Pantech e Learning",
+    date: "Feb - Mar 2024",
+    image: certPantech,
+  },
+  {
+    title: "Android App Development",
+    issuer: "Naan Mudhalvan - Google Smart Bridge",
+    date: "Apr 2025",
+    image: certAndroid,
+  },
+  {
+    title: "Cloud Engineering by Google",
+    issuer: "Naan Mudhalvan - InGage",
+    date: "Jul 2025",
+    image: certCloud,
+  },
+  {
+    title: "Experience Based Project Learning",
+    issuer: "Naan Mudhalvan - IBM",
+    date: "Oct 2025",
+    image: certIbm,
+  },
+  {
+    title: "Microsoft Office Essentials",
+    issuer: "Naan Mudhalvan - Microsoft",
+    date: "Jul 2025",
+    image: certMicrosoft,
   },
 ];
 
@@ -45,16 +84,16 @@ const CertificationsSection = () => {
         </div>
 
         {/* Certifications Grid */}
-        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {certifications.map((cert, index) => (
             <div
               key={index}
               className={`group relative transition-all duration-700 ${
                 inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
-              style={{ transitionDelay: `${index * 150}ms` }}
+              style={{ transitionDelay: `${index * 100}ms` }}
             >
-              <div className="relative p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--primary)/0.15)] h-full">
+              <div className="relative p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--primary)/0.15)] h-full flex flex-col">
                 {/* Glow Effect */}
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 
@@ -66,31 +105,45 @@ const CertificationsSection = () => {
                 </div>
 
                 {/* Content */}
-                <div className="relative">
+                <div className="relative flex-1 flex flex-col">
                   <h3 className="text-lg font-heading font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
                     {cert.title}
                   </h3>
                   <p className="text-accent font-medium text-sm mb-2">
                     {cert.issuer}
                   </p>
-                  <div className="flex items-center gap-2 text-muted-foreground text-sm mb-3">
+                  <div className="flex items-center gap-2 text-muted-foreground text-sm mb-4">
                     <Calendar className="w-4 h-4" />
                     <span>{cert.date}</span>
                   </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                    {cert.description}
-                  </p>
                   
-                  {/* View Credential Link */}
-                  <a 
-                    href={cert.credentialUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors group/link"
-                  >
-                    <span>View Credential</span>
-                    <ExternalLink className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                  </a>
+                  {/* View Certificate Button */}
+                  <div className="mt-auto">
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="w-full gap-2 border-primary/30 hover:border-primary hover:bg-primary/10"
+                        >
+                          <Eye className="w-4 h-4" />
+                          View Certificate
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-4xl max-h-[90vh] overflow-auto">
+                        <DialogHeader>
+                          <DialogTitle className="text-xl font-heading">{cert.title}</DialogTitle>
+                        </DialogHeader>
+                        <div className="mt-4">
+                          <img 
+                            src={cert.image} 
+                            alt={cert.title}
+                            className="w-full h-auto rounded-lg shadow-lg"
+                          />
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
                 </div>
 
                 {/* Corner Decoration */}
@@ -100,13 +153,6 @@ const CertificationsSection = () => {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Placeholder Message */}
-        <div className={`mt-12 text-center transition-all duration-700 delay-500 ${inView ? "opacity-100" : "opacity-0"}`}>
-          <p className="text-muted-foreground/60 text-sm italic">
-            Update this section with your actual certifications
-          </p>
         </div>
       </div>
     </section>
