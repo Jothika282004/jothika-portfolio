@@ -6,35 +6,19 @@ const skillCategories = [
     icon: Code,
     title: "Programming & Web",
     color: "primary",
-    skills: [
-      { name: "C", level: 75 },
-      { name: "HTML", level: 90 },
-      { name: "CSS", level: 85 },
-      { name: "Python", level: 70 },
-      { name: "Java", level: 65 },
-    ],
+    skills: ["C", "HTML", "CSS", "Python", "Java"],
   },
   {
     icon: Wrench,
     title: "Tools & Productivity",
     color: "secondary",
-    skills: [
-      { name: "MS Office", level: 85 },
-      { name: "VS Code", level: 90 },
-      { name: "Git", level: 70 },
-      { name: "Figma", level: 60 },
-    ],
+    skills: ["MS Office", "VS Code", "Git", "Figma"],
   },
   {
     icon: Rocket,
     title: "Development Areas",
     color: "accent",
-    skills: [
-      { name: "Web Development", level: 85 },
-      { name: "App Development", level: 70 },
-      { name: "Prompt Engineering", level: 90 },
-      { name: "UI/UX Design", level: 65 },
-    ],
+    skills: ["Web Development", "App Development", "Prompt Engineering", "UI/UX Design"],
   },
 ];
 
@@ -95,33 +79,21 @@ const SkillsSection = () => {
               </div>
 
               {/* Skills List */}
-              <div className="space-y-4">
+              <div className="flex flex-wrap gap-2">
                 {category.skills.map((skill, skillIndex) => (
-                  <div key={skill.name}>
-                    <div className="flex justify-between mb-2">
-                      <span className="text-sm font-medium text-foreground">
-                        {skill.name}
-                      </span>
-                      <span className="text-sm text-muted-foreground">
-                        {skill.level}%
-                      </span>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all duration-1000 ease-out ${
-                          category.color === "primary"
-                            ? "bg-gradient-to-r from-primary to-primary/60"
-                            : category.color === "secondary"
-                            ? "bg-gradient-to-r from-secondary to-secondary/60"
-                            : "bg-gradient-to-r from-accent to-accent/60"
-                        }`}
-                        style={{
-                          width: inView ? `${skill.level}%` : "0%",
-                          transitionDelay: `${catIndex * 0.2 + skillIndex * 0.1}s`,
-                        }}
-                      />
-                    </div>
-                  </div>
+                  <span
+                    key={skill}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                      category.color === "primary"
+                        ? "bg-primary/10 text-primary hover:bg-primary/20"
+                        : category.color === "secondary"
+                        ? "bg-secondary/10 text-secondary hover:bg-secondary/20"
+                        : "bg-accent/10 text-accent hover:bg-accent/20"
+                    } ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+                    style={{ transitionDelay: `${catIndex * 0.2 + skillIndex * 0.1}s` }}
+                  >
+                    {skill}
+                  </span>
                 ))}
               </div>
             </div>
