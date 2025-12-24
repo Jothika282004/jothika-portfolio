@@ -86,7 +86,7 @@ const ProjectsSection = () => {
   const { ref, inView } = useInView({ threshold: 0.1 });
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [voxcraftDialogOpen, setVoxcraftDialogOpen] = useState(false);
+  const [activeProjectDialog, setActiveProjectDialog] = useState<string | null>(null);
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % railFenceImages.length);
@@ -237,18 +237,16 @@ const ProjectsSection = () => {
                         ))}
                       </div>
                       
-                      {/* View Project button for VoxCraft */}
-                      {project.title === "VOXCRAFT" && (
-                        <Button
-                          onClick={() => setVoxcraftDialogOpen(true)}
-                          size="sm"
-                          variant="outline"
-                          className="gap-2 border-primary/50 hover:border-primary hover:bg-primary/10"
-                        >
-                          <Eye className="w-4 h-4" />
-                          View Project
-                        </Button>
-                      )}
+                      {/* View Project button */}
+                      <Button
+                        onClick={() => setActiveProjectDialog(project.title)}
+                        size="sm"
+                        variant="outline"
+                        className="gap-2 border-primary/50 hover:border-primary hover:bg-primary/10"
+                      >
+                        <Eye className="w-4 h-4" />
+                        View Project
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -342,24 +340,42 @@ const ProjectsSection = () => {
         </DialogContent>
       </Dialog>
 
-      {/* VoxCraft Screenshot Dialog */}
-      <Dialog open={voxcraftDialogOpen} onOpenChange={setVoxcraftDialogOpen}>
-        <DialogContent className="max-w-4xl bg-card border-border p-0 overflow-hidden">
-          <DialogTitle className="sr-only">VoxCraft Project Screenshot</DialogTitle>
-          <div className="relative">
-            <img
-              src={voxcraftScreenshot}
-              alt="VoxCraft - Voice Customizable AI Chatbot"
-              className="w-full h-auto"
-            />
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/90 to-transparent p-4">
-              <p className="text-foreground font-medium text-center">
-                VoxCraft - Voice Customizable AI Chatbot
-              </p>
+      {/* Minor Project Dialogs */}
+      {minorProjects.map((project) => (
+        <Dialog 
+          key={project.title}
+          open={activeProjectDialog === project.title} 
+          onOpenChange={(open) => !open && setActiveProjectDialog(null)}
+        >
+          <DialogContent className="max-w-4xl bg-card border-border p-0 overflow-hidden">
+            <DialogTitle className="sr-only">{project.title} Project</DialogTitle>
+            <div className="relative">
+              {project.title === "VOXCRAFT" ? (
+                <img
+                  src={voxcraftScreenshot}
+                  alt={`${project.title} - ${project.subtitle}`}
+                  className="w-full h-auto"
+                />
+              ) : (
+                <div className="aspect-video bg-muted flex items-center justify-center">
+                  <div className="text-center p-8">
+                    <project.icon className="w-16 h-16 text-primary mx-auto mb-4" />
+                    <h3 className="text-2xl font-heading font-bold gradient-text mb-2">{project.title}</h3>
+                    <p className="text-secondary font-medium mb-2">{project.subtitle}</p>
+                    <p className="text-muted-foreground text-sm max-w-md mx-auto">{project.description}</p>
+                    <p className="text-muted-foreground/60 text-xs mt-4">Screenshots coming soon</p>
+                  </div>
+                </div>
+              )}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/90 to-transparent p-4">
+                <p className="text-foreground font-medium text-center">
+                  {project.title} - {project.subtitle}
+                </p>
+              </div>
             </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
+      ))}
     </section>
   );
 };
