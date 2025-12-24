@@ -1,5 +1,20 @@
-import { Heart, Shield, Stethoscope, Mic, Moon, Train, Baby } from "lucide-react";
+import { Heart, Shield, Stethoscope, Mic, Moon, Train, Baby, ChevronLeft, ChevronRight } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+
+// Rail Fence project images
+import railfenceWeather from "@/assets/railfence-weather.png";
+import railfenceMap from "@/assets/railfence-map.png";
+import railfenceMetrics from "@/assets/railfence-metrics.png";
+import railfenceTracking from "@/assets/railfence-tracking.png";
+
+const railFenceImages = [
+  { src: railfenceWeather, caption: "Railway Weather Map" },
+  { src: railfenceMap, caption: "Railway Map Indication" },
+  { src: railfenceMetrics, caption: "Key Metrics & Train Schedules" },
+  { src: railfenceTracking, caption: "Live Train Tracking" },
+];
 
 const minorProjects = [
   {
@@ -50,6 +65,7 @@ const majorProjects = [
     icon: Train,
     gradient: "from-primary via-secondary to-accent",
     featured: true,
+    hasGallery: true,
   },
   {
     title: "LULLU CARE",
@@ -60,11 +76,22 @@ const majorProjects = [
     icon: Baby,
     gradient: "from-accent via-primary to-cyan-400",
     featured: true,
+    hasGallery: false,
   },
 ];
 
 const ProjectsSection = () => {
   const { ref, inView } = useInView({ threshold: 0.1 });
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % railFenceImages.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + railFenceImages.length) % railFenceImages.length);
+  };
 
   return (
     <section id="projects" className="py-20 md:py-32 relative" ref={ref}>
@@ -121,7 +148,7 @@ const ProjectsSection = () => {
                       <p className="text-muted-foreground text-sm leading-relaxed mb-4">
                         {project.description}
                       </p>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-2 mb-4">
                         {project.tags.map((tag) => (
                           <span
                             key={tag}
@@ -131,6 +158,31 @@ const ProjectsSection = () => {
                           </span>
                         ))}
                       </div>
+                      
+                      {/* Gallery for Rail Fence */}
+                      {project.hasGallery && (
+                        <div className="mt-4">
+                          <p className="text-sm text-muted-foreground mb-3">Project Screenshots:</p>
+                          <div className="grid grid-cols-4 gap-2">
+                            {railFenceImages.map((image, imgIndex) => (
+                              <button
+                                key={imgIndex}
+                                onClick={() => {
+                                  setCurrentImageIndex(imgIndex);
+                                  setGalleryOpen(true);
+                                }}
+                                className="aspect-video rounded-lg overflow-hidden border-2 border-border hover:border-primary transition-all duration-300 hover:scale-105"
+                              >
+                                <img
+                                  src={image.src}
+                                  alt={image.caption}
+                                  className="w-full h-full object-cover"
+                                />
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -214,6 +266,65 @@ const ProjectsSection = () => {
           ))}
         </div>
       </div>
+
+      {/* Image Gallery Dialog */}
+      <Dialog open={galleryOpen} onOpenChange={setGalleryOpen}>
+        <DialogContent className="max-w-4xl bg-card border-border p-0 overflow-hidden">
+          <DialogTitle className="sr-only">Rail Fence Project Screenshots</DialogTitle>
+          <div className="relative">
+            <img
+              src={railFenceImages[currentImageIndex].src}
+              alt={railFenceImages[currentImageIndex].caption}
+              className="w-full h-auto"
+            />
+            
+            {/* Navigation Arrows */}
+            <button
+              onClick={prevImage}
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-background/80 hover:bg-background flex items-center justify-center transition-colors"
+            >
+              <ChevronLeft className="w-6 h-6 text-foreground" />
+            </button>
+            <button
+              onClick={nextImage}
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-background/80 hover:bg-background flex items-center justify-center transition-colors"
+            >
+              <ChevronRight className="w-6 h-6 text-foreground" />
+            </button>
+            
+            {/* Caption */}
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/90 to-transparent p-4">
+              <p className="text-foreground font-medium text-center">
+                {railFenceImages[currentImageIndex].caption}
+              </p>
+              <p className="text-muted-foreground text-sm text-center mt-1">
+                {currentImageIndex + 1} / {railFenceImages.length}
+              </p>
+            </div>
+          </div>
+          
+          {/* Thumbnail Navigation */}
+          <div className="flex justify-center gap-2 p-4 bg-muted">
+            {railFenceImages.map((image, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentImageIndex(index)}
+                className={`w-16 h-10 rounded overflow-hidden border-2 transition-all ${
+                  index === currentImageIndex
+                    ? "border-primary scale-110"
+                    : "border-border hover:border-primary/50"
+                }`}
+              >
+                <img
+                  src={image.src}
+                  alt={image.caption}
+                  className="w-full h-full object-cover"
+                />
+              </button>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
