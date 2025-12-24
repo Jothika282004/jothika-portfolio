@@ -1,13 +1,15 @@
-import { Heart, Shield, Stethoscope, Mic, Moon, Train, Baby, ChevronLeft, ChevronRight } from "lucide-react";
+import { Heart, Shield, Stethoscope, Mic, Moon, Train, Baby, ChevronLeft, ChevronRight, Eye } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 // Rail Fence project images
 import railfenceWeather from "@/assets/railfence-weather.png";
 import railfenceMap from "@/assets/railfence-map.png";
 import railfenceMetrics from "@/assets/railfence-metrics.png";
 import railfenceTracking from "@/assets/railfence-tracking.png";
+import voxcraftScreenshot from "@/assets/voxcraft-screenshot.png";
 
 const railFenceImages = [
   { src: railfenceWeather, caption: "Railway Weather Map" },
@@ -84,6 +86,7 @@ const ProjectsSection = () => {
   const { ref, inView } = useInView({ threshold: 0.1 });
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [voxcraftDialogOpen, setVoxcraftDialogOpen] = useState(false);
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % railFenceImages.length);
@@ -223,7 +226,7 @@ const ProjectsSection = () => {
                       <p className="text-muted-foreground text-sm leading-relaxed mb-3">
                         {project.description}
                       </p>
-                      <div className="flex flex-wrap gap-1.5">
+                      <div className="flex flex-wrap gap-1.5 mb-3">
                         {project.tags.map((tag) => (
                           <span
                             key={tag}
@@ -233,6 +236,19 @@ const ProjectsSection = () => {
                           </span>
                         ))}
                       </div>
+                      
+                      {/* View Project button for VoxCraft */}
+                      {project.title === "VOXCRAFT" && (
+                        <Button
+                          onClick={() => setVoxcraftDialogOpen(true)}
+                          size="sm"
+                          variant="outline"
+                          className="gap-2 border-primary/50 hover:border-primary hover:bg-primary/10"
+                        >
+                          <Eye className="w-4 h-4" />
+                          View Project
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -322,6 +338,25 @@ const ProjectsSection = () => {
                 />
               </button>
             ))}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* VoxCraft Screenshot Dialog */}
+      <Dialog open={voxcraftDialogOpen} onOpenChange={setVoxcraftDialogOpen}>
+        <DialogContent className="max-w-4xl bg-card border-border p-0 overflow-hidden">
+          <DialogTitle className="sr-only">VoxCraft Project Screenshot</DialogTitle>
+          <div className="relative">
+            <img
+              src={voxcraftScreenshot}
+              alt="VoxCraft - Voice Customizable AI Chatbot"
+              className="w-full h-auto"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/90 to-transparent p-4">
+              <p className="text-foreground font-medium text-center">
+                VoxCraft - Voice Customizable AI Chatbot
+              </p>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
